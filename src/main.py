@@ -14,7 +14,7 @@ headers = {
 }
 
 # Settings
-INACTIVITY_LIMIT = timedelta(days=14)
+INACTIVITY_LIMIT = timedelta(days=7)
 LOG_FILE = "removed_members.log"
 
 
@@ -36,13 +36,13 @@ def remove_member(memberId, username=None):
 
     body = {"message": f"You have been removed from the party due to inactivity ({INACTIVITY_LIMIT.days} days). If you believe this is in error, please contact an OHeliasO."}
     print("Message:", body)
-    # resp = requests.post(url, headers=headers, json=body)
-    # if resp.ok:
-    #     msg = f"🗑️ Removed {username or user_id} ({user_id}) due to inactivity."
-    #     print(msg)
-    #     log_removal(msg)
-    # else:
-    #     print(f"❌ Failed to remove {username or user_id} ({user_id}): {resp.status_code} - {resp.text}")
+    resp = requests.post(url, headers=headers, json=body)
+    if resp.ok:
+        msg = f"🗑️ Removed {username or memberId} ({memberId}) due to inactivity."
+        print(msg)
+        # log_removal(msg)
+    else:
+        print(f"❌ Failed to remove {username or memberId} ({memberId}): {resp.status_code} - {resp.text}")
 
 
 def check_and_remove_inactive():
@@ -60,26 +60,26 @@ def check_and_remove_inactive():
 
         # 🚫 Skip the group leader
         if uid == leader_id:
-            print(f"👑 Skipping {username} ({uid}), group leader.")
+            print(f"👑 Skipping {username}, group leader.")
             continue
 
         last_login_str = m.get("auth", {}).get("timestamps", {}).get("loggedin")
         if not last_login_str:
-            print(f"⚠️ {username} ({uid}) has no login record. Skipping.")
+            print(f"⚠️ {username} has no login record. Skipping.")
             continue
 
         try:
             last_login = datetime.fromisoformat(last_login_str.replace("Z", "+00:00"))
         except Exception:
-            print(f"⚠️ Could not parse last login for {username} ({uid}): {last_login_str}")
+            print(f"⚠️ Could not parse last login for {username}: {last_login_str}")
             continue
 
         inactive_time = now - last_login
         if inactive_time > INACTIVITY_LIMIT:
-            print(f"🚪 {username} inactive for {inactive_time.days} days.")
+            print(f"🚪 {username.ljust(20)} inactive for {inactive_time.days} days.")
             remove_member(uid, username)
-        else:
-            print(f"✅ {username} active ({inactive_time.days} days since last login).")
+        # else:
+        #     print(f"✅ {username.ljust(20)} active ({inactive_time.days} days since last login).")
 
 def log_removal(message):
     """Log removals to a file with timestamp."""

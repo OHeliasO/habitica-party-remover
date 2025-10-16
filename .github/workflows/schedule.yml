@@ -1,0 +1,42 @@
+name: Daily Habitica Remover
+
+on:
+  schedule:
+    # ⏰ Runs every day at 07:00 UTC
+    - cron: "0 7 * * *"
+  workflow_dispatch:  # ✅ Allow manual trigger
+
+jobs:
+  auto-remover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5   # 🕔 Limit job runtime to 5 minutes total
+
+    env:
+      HABITICA_USER_ID: ${{ secrets.HABITICA_USER_ID }}
+      HABITICA_API_TOKEN: ${{ secrets.HABITICA_API_TOKEN }}
+      HABITICA_GROUP_ID: ${{ secrets.HABITICA_GROUP_ID }}
+      HABITICA_CLIENT: ${{ secrets.HABITICA_CLIENT }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: HABITICA
+          environment-file: environment.yml
+          auto-activate-base: false
+          use-mamba: true
+          cache: true
+
+      - name: Verify environment
+        run: |
+          conda info
+          conda list
+
+      - name: Run Habitica report script
+        run: |
+          source $(conda info --base)/etc/profile.d/conda.sh
+          conda activate HABITICA
+          python src/main.py
