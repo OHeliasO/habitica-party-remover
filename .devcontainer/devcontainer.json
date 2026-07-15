@@ -1,0 +1,22 @@
+{
+    "name": "Habitica-Party-Remover",
+
+    "build": {
+        "context": "..",
+        "dockerfile": "../Dockerfile"
+    },
+
+    "workspaceFolder": "/workspace",
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python"
+
+            ]
+        }
+    }
+}

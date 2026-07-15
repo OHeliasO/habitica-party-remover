@@ -16,6 +16,7 @@ jobs:
       HABITICA_API_TOKEN: ${{ secrets.HABITICA_API_TOKEN }}
       HABITICA_GROUP_ID: ${{ secrets.HABITICA_GROUP_ID }}
       HABITICA_CLIENT: ${{ secrets.HABITICA_CLIENT }}
+      HABITICA_INACTIVITY_LIMIT_DAYS: ${{ secrets.HABITICA_INACTIVITY_LIMIT_DAYS }}
 
     steps:
       - name: Checkout repository

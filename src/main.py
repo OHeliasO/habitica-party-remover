@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime, timedelta, timezone
-from config import API_USER_ID, API_TOKEN, API_GROUP_ID, API_CLIENT
+from config import API_USER_ID, API_TOKEN, API_GROUP_ID, API_CLIENT, INACTIVITY_LIMIT_DAYS
 
 GROUP_URL = f"https://habitica.com/api/v4/groups/{API_GROUP_ID}"
 GROUP_MEMBERS_URL = f"{GROUP_URL}/members?includeAllPublicFields=true"
@@ -14,7 +14,7 @@ headers = {
 }
 
 # Settings
-INACTIVITY_LIMIT = timedelta(days=7)
+INACTIVITY_LIMIT = timedelta(days=INACTIVITY_LIMIT_DAYS)
 LOG_FILE = "removed_members.log"
 
 
