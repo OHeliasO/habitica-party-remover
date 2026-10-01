@@ -8,6 +8,5 @@ API_USER_ID = os.getenv("HABITICA_USER_ID")
 API_TOKEN = os.getenv("HABITICA_API_TOKEN")
 API_GROUP_ID = os.getenv("HABITICA_GROUP_ID")
 API_CLIENT= os.getenv("HABITICA_CLIENT")
-INACTIVITY_LIMIT_DAYS= int(os.getenv("HABITICA_INACTIVITY_LIMIT_DAYS"), 30)  # Default to 30 days if not set
-
+INACTIVITY_LIMIT_DAYS= int(os.getenv("HABITICA_INACTIVITY_LIMIT_DAYS", "30"))  # Default to 30 days if not set
 

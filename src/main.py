@@ -75,11 +75,12 @@ def check_and_remove_inactive():
             continue
 
         inactive_time = now - last_login
+        # print(inactive_time)
         if inactive_time > INACTIVITY_LIMIT:
             print(f"🚪 {username.ljust(20)} inactive for {inactive_time.days} days.")
             remove_member(uid, username)
-        # else:
-        #     print(f"✅ {username.ljust(20)} active ({inactive_time.days} days since last login).")
+        else:
+            print(f"✅ {username.ljust(20)} active ({inactive_time.days} days since last login).")
 
 def log_removal(message):
     """Log removals to a file with timestamp."""
